@@ -1,0 +1,9 @@
+---
+- project:
+    merge-mode: squash-merge
+    check:
+      jobs:
+        - otc-terraform-lint
+    gate:
+      jobs:
+        - otc-terraform-lint
