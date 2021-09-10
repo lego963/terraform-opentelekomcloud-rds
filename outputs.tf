@@ -3,6 +3,11 @@ output "rds_instance_id" {
   value       = local.rds_instance_id
 }
 
+output "rds_instance_name" {
+  description = "Name of the RDSv3 db instance"
+  value       = concat(opentelekomcloud_rds_instance_v3.this.*.name, [""])[0]
+}
+
 output "rds_parametergroup_id" {
   description = "ID of the RDSv3 db parameter group"
   value       = opentelekomcloud_rds_parametergroup_v3.this.*.id

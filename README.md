@@ -15,8 +15,58 @@ Terraform 0.13 and newer.
 ## Usage
 
 ```hcl
+module "vpc" {
+  source = "terraform-opentelekomcloud-modules/vpc/opentelekomcloud"
+
+  prefix = "infra"
+  cidr = "10.0.0.0/16"
+
+  availability_zone = "eu-de-01"
+
+  vpc_cidr          = "10.0.0.0/24"
+  subnet_cidr       = "10.0.0.0/24"
+  gateway_ip        = "10.0.0.1"
+  ntp_addresses     = ["10.100.0.33", "10.100.0.34"]
+
+  dhcp_enable = true
+  snat_enable = true
+
+  tags = {
+    infra = "vpc"
+  }
+}
+
+
+module "ssh_sg" {
+  source = "terraform-opentelekomcloud-modules/security-group/opentelekomcloud"
+  prefix      = "ssh"
+  description = "Simple security group for SSH"
+
+  ingress_with_source_cidr = [
+    {
+      from_port   = 22
+      to_port     = 22
+      protocol    = "tcp"
+      source_cidr = "0.0.0.0/0"
+    }
+  ]
+}
+
 module "db" {
   source = "terraform-opentelekomcloud-modules/rds/opentelekomcloud"
+
+  availability_zone = ["eu-de-01"]
+  db_password       = "5ecurePa55w0rd@"
+  db_type           = "PostgreSQL"
+  db_version        = "11"
+  secgroup_id       = module.ssh_sg.security_group_id
+  network_id        = module.vpc.network_id
+  vpc_id            = module.vpc.vpc_id
+  flavor            = "rds.pg.c2.medium"
+
+  tags = {
+    infra = "rds"
+  }
 }
 ```
 
@@ -77,6 +127,7 @@ No modules.
 | Name                                                                                                           | Description                               |
 | -------------------------------------------------------------------------------------------------------------- | ----------------------------------------- |
 | <a name="output_rds_instance_id"></a> [rds_instance_id](#output\_rds\_instance\_id)                            | ID of the RDSv3 db instance               |
+| <a name="output_rds_instance_name"></a> [rds_instance_name](#output\_rds\_instance\_name)                      | Name of the RDSv3 db instance             |
 | <a name="output_rds_parametergroup_id"></a> [rds_parametergroup_id](#output\_rds\_parametergroup\_id)          | ID of the RDSv3 db parameter group        |
 | <a name="output_rds_read_replica_ids"></a> [rds_read_replica_ids](#output\_rds\_read\_replica\_ids)            | IDs of the RDSv3 db read replica          |
 | <a name="output_rds_instance_nodes"></a> [rds_instance_nodes](#output\_rds\_instance\_nodes)                   | List of the RDSv3 db instance nodes       |
