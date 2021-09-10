@@ -6,7 +6,7 @@ locals {
 }
 
 ########################
-# RDSv3 Perameter Group
+# RDSv3 Parameter Group
 ########################
 
 resource "opentelekomcloud_rds_parametergroup_v3" "this" {
@@ -45,12 +45,14 @@ resource "opentelekomcloud_rds_instance_v3" "this" {
     disk_encryption_id = var.volume_encryption_id
   }
   flavor              = var.flavor
-  ha_replication_mode = var.ha_enable ? var.ha_replication_mode : null
+  ha_replication_mode = var.ha_replication_mode
 
   backup_strategy {
     start_time = var.backup_start_time
     keep_days  = var.backup_keep_days
   }
+
+  tags = var.tags
 
   param_group_id = length(var.parametergroup_values) > 0 ? concat(opentelekomcloud_rds_parametergroup_v3.parametergroup.*.id)[0] : null
 }
@@ -60,12 +62,14 @@ resource "opentelekomcloud_rds_instance_v3" "this" {
 ##############################
 
 resource "opentelekomcloud_rds_read_replica_v3" "this" {
-  count = length(var.read_replica_config) > 0 ? length(var.read_replica_config) : 0
+  count = length(var.read_replica_config)
 
   name              = var.read_replica_config[count.index]["name"]
-  flavor            = var.read_replica_config[count.index]["flavor"]
+  flavor_ref        = var.read_replica_config[count.index]["flavor"]
   availability_zone = var.read_replica_config[count.index]["availability_zone"]
   replica_of_id     = local.rds_instance_id
+
+  public_ips = var.read_replica_config[count.index]["public_ips"]
 
   volume {
     type               = var.read_replica_config[count.index]["volume_type"]
