@@ -44,7 +44,7 @@ resource "opentelekomcloud_rds_instance_v3" "this" {
     size               = var.volume_size
     disk_encryption_id = var.volume_encryption_id
   }
-  flavor              = var.flavor
+  flavor              = var.db_flavor
   ha_replication_mode = var.ha_replication_mode
 
   backup_strategy {

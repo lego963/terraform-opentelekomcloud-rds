@@ -19,7 +19,6 @@ module "vpc" {
   source = "terraform-opentelekomcloud-modules/vpc/opentelekomcloud"
 
   prefix = "infra"
-  cidr = "10.0.0.0/16"
 
   availability_zone = "eu-de-01"
 
@@ -62,7 +61,8 @@ module "db" {
   secgroup_id       = module.ssh_sg.security_group_id
   network_id        = module.vpc.network_id
   vpc_id            = module.vpc.vpc_id
-  flavor            = "rds.pg.c2.medium"
+  db_flavor         = "rds.pg.c2.medium"
+  volume_size       = 100
 
   tags = {
     infra = "rds"
@@ -119,7 +119,7 @@ No modules.
 | <a name="input_tags"></a> [tags](#input\_tags)                                                                    | The key/value tag pairs to associate with the RDSv3 db instance                                      | `map(string)`                                                                                                                                                | `null`         |    no    |
 | <a name="input_parametergroup_values"></a> [parametergroup_values](#input\_parametergroup\_values)                | Map of the values of the RDSv3 db parameter group                                                    | `map(string)`                                                                                                                                                | `{}`           |    no    |
 | <a name="input_parametergroup_description"></a> [parametergroup_description](#input\_parametergroup\_description) | Description of the RDSv3 parameter group to create                                                   | `string`                                                                                                                                                     | `""`           |    no    |
-| <a name="input_read_replica_config"></a> [read_replica_config](#input\_read\_replica\_config)                     | The configuration of RDSv3 db read replica instances                                                 | `list(object({name = string, flavor = string, availability_zone = string, public_ips = list(string), volume_type = string, volume_encryption_id = string}))` | `null`         |    no    |
+| <a name="input_read_replica_config"></a> [read_replica_config](#input\_read\_replica\_config)                     | The configuration of RDSv3 db read replica instances                                                 | `list(object({name = string, flavor = string, availability_zone = string, public_ips = list(string), volume_type = string, volume_encryption_id = string}))` | `[]`           |    no    |
 
 
 ## Outputs

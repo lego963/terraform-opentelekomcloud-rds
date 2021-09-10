@@ -7,7 +7,6 @@ module "vpc" {
   source = "terraform-opentelekomcloud-modules/vpc/opentelekomcloud"
 
   prefix = "infra"
-  cidr   = "10.0.0.0/16"
 
   availability_zone = "eu-de-01"
 
@@ -23,7 +22,6 @@ module "vpc" {
     infra = "vpc"
   }
 }
-
 
 module "ssh_sg" {
   source      = "terraform-opentelekomcloud-modules/security-group/opentelekomcloud"
@@ -50,7 +48,8 @@ module "rds" {
   secgroup_id       = module.ssh_sg.security_group_id
   network_id        = module.vpc.network_id
   vpc_id            = module.vpc.vpc_id
-  flavor            = "rds.pg.c2.medium"
+  db_flavor         = "rds.pg.c2.medium"
+  volume_size       = 100
 
   tags = {
     infra = "rds"

@@ -78,6 +78,8 @@ variable "ha_replication_mode" {
 variable "db_port" {
   type        = number
   description = "(optional) The port on which the RDSv3 accepts connections"
+
+  default = null
 }
 
 variable "db_password" {
@@ -103,7 +105,7 @@ variable "volume_type" {
 }
 
 variable "volume_size" {
-  type        = string
+  type        = number
   description = "(required) The volume size of the RDSv3 instance"
 }
 
@@ -168,4 +170,6 @@ variable "read_replica_config" {
     )
   )
   description = "(optional) The configuration of RDSv3 db read replica instances"
+
+  default = []
 }
