@@ -76,10 +76,8 @@ variable "ha_replication_mode" {
 }
 
 variable "db_port" {
-  type        = string
+  type        = number
   description = "(optional) The port on which the RDSv3 accepts connections"
-
-  default = ""
 }
 
 variable "db_password" {
@@ -132,7 +130,7 @@ variable "backup_keep_days" {
 
 variable "tags" {
   type        = map(string)
-  description = "(optional) the key/value tag pairs to associate with the RDSv3 db instance"
+  description = "(optional) The key/value tag pairs to associate with the RDSv3 db instance"
 }
 
 ########################
