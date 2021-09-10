@@ -12,7 +12,7 @@ locals {
 resource "opentelekomcloud_rds_parametergroup_v3" "this" {
   count = length(var.parametergroup_values) > 0 ? 1 : 0
 
-  name        = "${prefix}_parametergroup"
+  name        = "${var.prefix}_parametergroup"
   description = var.parametergroup_description
   values      = var.parametergroup_values
   datastore {
@@ -35,7 +35,7 @@ resource "opentelekomcloud_rds_instance_v3" "this" {
     version  = var.db_version
     port     = var.db_port
   }
-  name              = "${prefix}_rds_instance"
+  name              = "${var.prefix}_rds_instance"
   security_group_id = var.secgroup_id
   subnet_id         = var.network_id
   vpc_id            = var.vpc_id
@@ -54,7 +54,7 @@ resource "opentelekomcloud_rds_instance_v3" "this" {
 
   tags = var.tags
 
-  param_group_id = length(var.parametergroup_values) > 0 ? concat(opentelekomcloud_rds_parametergroup_v3.parametergroup.*.id)[0] : null
+  param_group_id = length(var.parametergroup_values) > 0 ? concat(opentelekomcloud_rds_parametergroup_v3.this.*.id)[0] : null
 }
 
 ##############################

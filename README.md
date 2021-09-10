@@ -21,7 +21,6 @@ module "vpc" {
   prefix = "infra"
 
   availability_zone = "eu-de-01"
-
   vpc_cidr          = "10.0.0.0/24"
   subnet_cidr       = "10.0.0.0/24"
   gateway_ip        = "10.0.0.1"
