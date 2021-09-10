@@ -44,7 +44,7 @@ variable "create_rds" {
 
 variable "availability_zone" {
   type        = list(string)
-  description = "(optional) The Availability Zone list of the RDSv3 instance (Multiple AZ must be specified if you are using HA)"
+  description = "(required) The Availability Zone list of the RDSv3 instance (Multiple AZ must be specified if you are using HA)"
 
   default = ["eu-de-01"]
 }
@@ -99,7 +99,7 @@ variable "db_flavor" {
 
 variable "volume_type" {
   type        = string
-  description = "(optional) The volume type of the RDSv3 instance"
+  description = "(required) The volume type of the RDSv3 instance"
 
   default = "COMMON"
 }
@@ -118,9 +118,9 @@ variable "volume_encryption_id" {
 
 variable "backup_start_time" {
   type        = string
-  description = "(optional) The window to perform maintenance in. Eg: '00:00-01:00'"
+  description = "(required) The window to perform maintenance in. Eg: '00:00-01:00'"
 
-  default = ""
+  default = "00:00-01:00"
 }
 
 variable "backup_keep_days" {
